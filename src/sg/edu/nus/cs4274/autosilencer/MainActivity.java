@@ -30,6 +30,9 @@ public class MainActivity extends Activity {
 
 		for (ScanResult result : results) {
 			Log.d("result", result.SSID);
+//			
+//			
+//			
 			
 			if (result.SSID.equals("NUS")){
 				//Silence the phone
