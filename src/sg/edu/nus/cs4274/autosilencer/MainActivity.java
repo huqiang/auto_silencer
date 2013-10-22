@@ -34,7 +34,7 @@ public class MainActivity extends Activity {
 //			
 //			
 			
-			if (result.SSID.equals("NUS")){
+			if (result.SSID.equals("NTU")){
 				//Silence the phone
 				AudioManager audiomanage = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
 				audiomanage.setRingerMode(AudioManager.RINGER_MODE_SILENT);
