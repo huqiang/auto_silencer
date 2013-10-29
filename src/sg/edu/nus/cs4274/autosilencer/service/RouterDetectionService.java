@@ -5,14 +5,13 @@ package sg.edu.nus.cs4274.autosilencer.service;
 
 import java.util.List;
 
-import sg.edu.nus.cs4274.autosilencer.receiver.RouterFoundReceiver;
+import sg.edu.nus.cs4274.autosilencer.MainActivity.RouterFoundReceiver;
+
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
-import android.media.AudioManager;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
-import android.util.Log;
 import android.widget.Toast;
 
 /**
