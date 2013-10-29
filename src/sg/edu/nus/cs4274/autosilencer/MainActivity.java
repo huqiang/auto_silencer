@@ -50,6 +50,7 @@ public class MainActivity extends Activity {
 		AlarmManager alarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 		alarm.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(),
 				POLLING_INTERVAL * 1000, pintent);
+
 	}
 
 	@Override
@@ -68,6 +69,7 @@ public class MainActivity extends Activity {
 		 */
 		public static final String ACTION_RESP = "sg.edu.nus.cs4274.intent.action.ROUTER_FOUND";
 		private Context context;
+
 		public RouterFoundReceiver() {
 			super();
 		}
@@ -83,29 +85,30 @@ public class MainActivity extends Activity {
 		}
 
 		private void onReceivedRouters() {
-//			If not connect to network, silence phone
-			if(!isNetworkAvailable()){
-				AudioManager audiomanage = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
-				audiomanage.setRingerMode(AudioManager.RINGER_MODE_SILENT);
-			}else{
-				//TODO when network is available.... Assume only one router presents.
+			// If not connect to network, silence phone
+			if (true) {
+				silencePhone();
+			} else {
+				// TODO when network is available.... Assume only one router
+				// presents.
 				Intent intent = new Intent(this.context, DownloadService.class);
-				for (int i = 0; i < ROUTERS.length; i++){
-					intent.putExtra(DownloadService.PARAM_IN_MSG, SERVER+ROUTERS[i]);
-					
+				for (int i = 0; i < ROUTERS.length; i++) {
+					intent.putExtra(DownloadService.PARAM_IN_MSG, SERVER
+							+ ROUTERS[i]);
+
 				}
-				
+
 			}
 		}
-		
+
 		private boolean isNetworkAvailable() {
-		    ConnectivityManager connectivityManager 
-		          = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-		    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-		    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+			ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+			NetworkInfo activeNetworkInfo = connectivityManager
+					.getActiveNetworkInfo();
+			return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 		}
 	}
-	
+
 	public class OnDownloadReceiver extends BroadcastReceiver {
 
 		/**
@@ -122,58 +125,49 @@ public class MainActivity extends Activity {
 			// TODO Auto-generated method stub
 			String routerString = intent
 					.getStringExtra(RouterDetectionService.PARAM_OUT_MSG);
-			
-			
+
 		}
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	public void onToggleClicked(View view) {
-	    // Is the toggle on?
-	    boolean on = ((ToggleButton) view).isChecked();
-	    TextView displayText = (TextView) findViewById(R.id.textView2);
-	    AudioManager audiomanage = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
-	    if (on) {
-	    	//Silence the phone
-	    	
-	    	
-	    	
-	    	//Context context = getApplicationContext();
-			//CharSequence text = "Button On!";
-			//int duration = Toast.LENGTH_SHORT;
+		// Is the toggle on?
+		boolean on = ((ToggleButton) view).isChecked();
+		TextView displayText = (TextView) findViewById(R.id.textView2);
+		AudioManager audiomanage = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+		if (on) {
+			// Silence the phone
 
-			//Toast toast = Toast.makeText(context, text, duration);
-			//toast.show();
-	    	
-	    	
-	    	displayText.setText("Slient Off");
-	    	
+			// Context context = getApplicationContext();
+			// CharSequence text = "Button On!";
+			// int duration = Toast.LENGTH_SHORT;
+
+			// Toast toast = Toast.makeText(context, text, duration);
+			// toast.show();
+
+			displayText.setText("Slient Off");
+
 			audiomanage.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-			
-	    } else {
-	    	//Silence the phone
-	    	
-	    	
-	    	//Context context = getApplicationContext();
-			//CharSequence text = "Button Off!";
-			//int duration = Toast.LENGTH_SHORT;
 
-			//Toast toast = Toast.makeText(context, text, duration);
-			//toast.show();
+		} else {
+			// Silence the phone
+
+			// Context context = getApplicationContext();
+			// CharSequence text = "Button Off!";
+			// int duration = Toast.LENGTH_SHORT;
+
+			// Toast toast = Toast.makeText(context, text, duration);
+			// toast.show();
 			displayText.setText("Slient On");
 			audiomanage.setRingerMode(AudioManager.RINGER_MODE_SILENT);
-	    }
+		}
 	}
-	
+
+	private void silencePhone() {
+		AudioManager audiomanage = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+		audiomanage.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+
+		TextView displayText = (TextView) findViewById(R.id.textView3);
+		displayText.setText("RINGER_MODE_SILENT");
+	}
+
 }
