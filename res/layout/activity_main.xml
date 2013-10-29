@@ -12,7 +12,8 @@ android:layout_gravity="center"
 android:layout_marginTop="10dp"
 android:text="Click to view Custom Button Action"
 android:textAppearance="?android:attr/textAppearanceMedium" />
-
+     
+     
     <Button
         android:id="@+id/button1"
         android:layout_width="wrap_content"
@@ -21,5 +22,16 @@ android:textAppearance="?android:attr/textAppearanceMedium" />
         android:layout_centerHorizontal="true"
         android:layout_marginTop="68dp"
         android:background="@drawable/button_silent" />
+
+    <ToggleButton
+        android:id="@+id/togglebutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="197dp"
+        android:onClick="onToggleClicked"
+        android:textOff="Vibrate off"
+        android:textOn="Vibrate on" />
 
 </RelativeLayout>
