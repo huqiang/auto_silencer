@@ -2,8 +2,14 @@ package sg.edu.nus.cs4274.autosilencer;
 
 import java.util.List;
 
+import sg.edu.nus.cs4274.autosilencer.receiver.RouterFoundReceiver;
+import sg.edu.nus.cs4274.autosilencer.service.RouterDetectionService;
+
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
@@ -12,34 +18,16 @@ import android.util.Log;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
-	WifiManager wifi;
-	List<ScanResult> results;
+	private RouterFoundReceiver receiver;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-		if (wifi.isWifiEnabled() == false) {
-			Toast.makeText(getApplicationContext(),
-					"wifi is disabled..making it enabled", Toast.LENGTH_LONG)
-					.show();
-			wifi.setWifiEnabled(true);
-		}
-		results = wifi.getScanResults();
-
-		for (ScanResult result : results) {
-			Log.d("result", result.SSID);
-//			
-//			
-//			
-			
-			if (result.SSID.equals("NTU")){
-				//Silence the phone
-				AudioManager audiomanage = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
-				audiomanage.setRingerMode(AudioManager.RINGER_MODE_SILENT);
-			}
-		}
+		IntentFilter filter = new IntentFilter(RouterFoundReceiver.ACTION_RESP);
+        filter.addCategory(Intent.CATEGORY_DEFAULT);
+        receiver = new RouterFoundReceiver();
+        registerReceiver(receiver, filter);
 	}
 	
 	@Override
