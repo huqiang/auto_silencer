@@ -3,6 +3,7 @@ package sg.edu.nus.cs4274.autosilencer;
 import java.util.Calendar;
 import java.util.List;
 
+import sg.edu.nus.cs4274.autosilencer.service.DownloadService;
 import sg.edu.nus.cs4274.autosilencer.service.RouterDetectionService;
 
 import android.app.Activity;
@@ -22,7 +23,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
-	private RouterFoundReceiver receiver;
+	private RouterFoundReceiver routerFoundReceiver;
+	private OnDownloadReceiver onDownloadReceiver;
 	private final static String SERVER = ":4274";
 	private final static int POLLING_INTERVAL = 30;
 	private String[] ROUTERS;
@@ -33,8 +35,8 @@ public class MainActivity extends Activity {
 
 		IntentFilter filter = new IntentFilter(RouterFoundReceiver.ACTION_RESP);
 		filter.addCategory(Intent.CATEGORY_DEFAULT);
-		receiver = new RouterFoundReceiver();
-		registerReceiver(receiver, filter);
+		routerFoundReceiver = new RouterFoundReceiver();
+		registerReceiver(routerFoundReceiver, filter);
 
 		Calendar cal = Calendar.getInstance();
 		Intent intent = new Intent(this, RouterDetectionService.class);
@@ -49,7 +51,7 @@ public class MainActivity extends Activity {
 		super.onDestroy(); // Always call the superclass
 
 		// Stop method tracing that the activity started during onCreate()
-		unregisterReceiver(receiver);
+		unregisterReceiver(routerFoundReceiver);
 		android.os.Debug.stopMethodTracing();
 	}
 
@@ -59,21 +61,15 @@ public class MainActivity extends Activity {
 		 * 
 		 */
 		public static final String ACTION_RESP = "sg.edu.nus.cs4274.intent.action.ROUTER_FOUND";
-
+		private Context context;
 		public RouterFoundReceiver() {
 			super();
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * android.content.BroadcastReceiver#onReceive(android.content.Context,
-		 * android.content.Intent)
-		 */
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			// TODO Auto-generated method stub
+			this.context = context;
 			String routerString = intent
 					.getStringExtra(RouterDetectionService.PARAM_OUT_MSG);
 			ROUTERS = routerString.split(" ");
@@ -86,7 +82,13 @@ public class MainActivity extends Activity {
 				AudioManager audiomanage = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
 				audiomanage.setRingerMode(AudioManager.RINGER_MODE_SILENT);
 			}else{
-				//TODO when network is available....
+				//TODO when network is available.... Assume only one router presents.
+				Intent intent = new Intent(this.context, DownloadService.class);
+				for (int i = 0; i < ROUTERS.length; i++){
+					intent.putExtra(DownloadService.PARAM_IN_MSG, SERVER+ROUTERS[i]);
+					
+				}
+				
 			}
 		}
 		
@@ -97,4 +99,26 @@ public class MainActivity extends Activity {
 		    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 		}
 	}
+	
+	public class OnDownloadReceiver extends BroadcastReceiver {
+
+		/**
+		 * 
+		 */
+		public static final String ACTION_RESP = "sg.edu.nus.cs4274.intent.action.DOWNLOADED";
+
+		public OnDownloadReceiver() {
+			super();
+		}
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			// TODO Auto-generated method stub
+			String routerString = intent
+					.getStringExtra(RouterDetectionService.PARAM_OUT_MSG);
+			
+			
+		}
+	}
+
 }

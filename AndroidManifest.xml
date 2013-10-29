@@ -28,6 +28,7 @@
             </intent-filter>
         </activity>
         <service android:name=".service.RouterDetectionService"></service>
+        <service android:name=".service.DownloadService"></service>
         
     </application>
 
