@@ -61,7 +61,7 @@ public class RouterDetectionService extends IntentService {
 		scanResults = wifi.getScanResults();
 
 		for (ScanResult r : scanResults) {
-			if (r.SSID.startsWith("CS4274")){
+			if (r.SSID.startsWith("NUS")){
 				result +=r.SSID+" "; 
 			}
 		}

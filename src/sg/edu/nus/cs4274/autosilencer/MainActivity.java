@@ -20,7 +20,13 @@ import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
+import android.app.Activity;
+import android.view.Menu;
+import android.view.View;
 
 public class MainActivity extends Activity {
 	private RouterFoundReceiver routerFoundReceiver;
@@ -32,7 +38,7 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		setContentView(R.layout.activity_main);
 		IntentFilter filter = new IntentFilter(RouterFoundReceiver.ACTION_RESP);
 		filter.addCategory(Intent.CATEGORY_DEFAULT);
 		routerFoundReceiver = new RouterFoundReceiver();
@@ -121,4 +127,53 @@ public class MainActivity extends Activity {
 		}
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public void onToggleClicked(View view) {
+	    // Is the toggle on?
+	    boolean on = ((ToggleButton) view).isChecked();
+	    TextView displayText = (TextView) findViewById(R.id.textView2);
+	    AudioManager audiomanage = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+	    if (on) {
+	    	//Silence the phone
+	    	
+	    	
+	    	
+	    	//Context context = getApplicationContext();
+			//CharSequence text = "Button On!";
+			//int duration = Toast.LENGTH_SHORT;
+
+			//Toast toast = Toast.makeText(context, text, duration);
+			//toast.show();
+	    	
+	    	
+	    	displayText.setText("Slient Off");
+	    	
+			audiomanage.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+			
+	    } else {
+	    	//Silence the phone
+	    	
+	    	
+	    	//Context context = getApplicationContext();
+			//CharSequence text = "Button Off!";
+			//int duration = Toast.LENGTH_SHORT;
+
+			//Toast toast = Toast.makeText(context, text, duration);
+			//toast.show();
+			displayText.setText("Slient On");
+			audiomanage.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+	    }
+	}
+	
 }
