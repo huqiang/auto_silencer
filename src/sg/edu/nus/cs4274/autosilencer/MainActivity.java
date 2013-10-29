@@ -24,7 +24,7 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) 
 	{
 		super.onCreate(savedInstanceState);
-
+		setContentView(R.layout.activity_main);
 		wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 		if (wifi.isWifiEnabled() == false) {
 			Toast.makeText(getApplicationContext(),
@@ -33,70 +33,88 @@ public class MainActivity extends Activity {
 			wifi.setWifiEnabled(true);
 		}
 		results = wifi.getScanResults();
-
+		AudioManager audiomanage = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
 		for (ScanResult result : results) {
 			Log.d("result", result.SSID);
+			
 			if (result.SSID.equals("NUS")){
 				//Silence the phone
-				AudioManager audiomanage = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+				
+				
 				audiomanage.setRingerMode(AudioManager.RINGER_MODE_SILENT);
 			}
 		}
+		
+		
+		TextView displayText1 = (TextView) findViewById(R.id.textView3);
+		displayText1.setText("Auto Silence");
+		
+		AudioManager am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
 
-		setContentView(R.layout.activity_main);
+		switch (am.getRingerMode()) {
+		    case AudioManager.RINGER_MODE_SILENT:
+		    	displayText1.setText("RINGER_MODE_SILENT");
+		        break;
+		    case AudioManager.RINGER_MODE_VIBRATE:
+		    	displayText1.setText("RINGER_MODE_VIBRATE");
+		        break;
+		    case AudioManager.RINGER_MODE_NORMAL:
+		    	displayText1.setText("RINGER_MODE_NORMAL");
+		        break;
+		}
+		
+		
+		
+
+		
+		
 	
-
-	Button cb=(Button) findViewById(R.id.button1);
-	cb.setOnClickListener(new View.OnClickListener()
-	{
-
-		
-		
-	@Override
-	public void onClick(View v)
-	{
-		Context context = getApplicationContext();
-		CharSequence text = "Hello toast!";
-		int duration = Toast.LENGTH_SHORT;
-
-		Toast toast = Toast.makeText(context, text, duration);
-		toast.show();
-
 	}
-	});
-	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	public void onToggleClicked(View view) {
 	    // Is the toggle on?
 	    boolean on = ((ToggleButton) view).isChecked();
+	    TextView displayText = (TextView) findViewById(R.id.textView2);
 	    AudioManager audiomanage = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
 	    if (on) {
 	    	//Silence the phone
 	    	
 	    	
 	    	
-	    	Context context = getApplicationContext();
-			CharSequence text = "Button On!";
-			int duration = Toast.LENGTH_SHORT;
+	    	//Context context = getApplicationContext();
+			//CharSequence text = "Button On!";
+			//int duration = Toast.LENGTH_SHORT;
 
-			Toast toast = Toast.makeText(context, text, duration);
-			toast.show();
+			//Toast toast = Toast.makeText(context, text, duration);
+			//toast.show();
 	    	
-			
+	    	
+	    	displayText.setText("Slient Off");
+	    	
 			audiomanage.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
 			
 	    } else {
 	    	//Silence the phone
 	    	
 	    	
-	    	Context context = getApplicationContext();
-			CharSequence text = "Button Off!";
-			int duration = Toast.LENGTH_SHORT;
+	    	//Context context = getApplicationContext();
+			//CharSequence text = "Button Off!";
+			//int duration = Toast.LENGTH_SHORT;
 
-			Toast toast = Toast.makeText(context, text, duration);
-			toast.show();
-	    	
+			//Toast toast = Toast.makeText(context, text, duration);
+			//toast.show();
+			displayText.setText("Slient On");
 			audiomanage.setRingerMode(AudioManager.RINGER_MODE_SILENT);
 	    }
 	}

@@ -4,34 +4,44 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity" >
 
-     <TextView
-android:id="@+id/textView1"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:layout_gravity="center"
-android:layout_marginTop="10dp"
-android:text="Click to view Custom Button Action"
-android:textAppearance="?android:attr/textAppearanceMedium" />
-     
-     
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="68dp"
-        android:background="@drawable/button_silent" />
+<TextView
+    android:id="@+id/textView1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="60dp"
+    android:text="Tap button to toggle silent on/off."
+    android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <ToggleButton
-        android:id="@+id/togglebutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="197dp"
-        android:onClick="onToggleClicked"
-        android:textOff="Vibrate off"
-        android:textOn="Vibrate on" />
+<ToggleButton
+    android:id="@+id/togglebutton"
+    style="@style/YourThemeName"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/textView1"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="57dp"
+    android:background="@layout/btn_toggle_bg"
+    android:checked="true"
+    android:onClick="onToggleClicked" />
+
+<TextView
+    android:id="@+id/textView2"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true"
+    android:layout_marginBottom="181dp"
+    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+<TextView
+    android:id="@+id/textView3"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="23dp"
+    android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>
