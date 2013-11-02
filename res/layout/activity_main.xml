@@ -5,12 +5,30 @@
     tools:context=".MainActivity" >
 
 <TextView
-    android:id="@+id/textView1"
+    android:id="@+id/textView3"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_alignParentTop="true"
     android:layout_centerHorizontal="true"
-    android:layout_marginTop="60dp"
+    android:layout_marginTop="35dp"
+    android:text="+id/textView3"
+    android:textAppearance="?android:attr/textAppearanceMedium" />
+
+<ImageView
+    android:id="@+id/imageView1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/textView3"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="30dp" />
+
+<TextView
+    android:id="@+id/textView1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_above="@+id/togglebutton"
+    android:layout_centerHorizontal="true"
+    android:layout_marginBottom="75dp"
     android:text="Tap button to toggle silent on/off."
     android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -19,9 +37,9 @@
     style="@style/YourThemeName"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_below="@+id/textView1"
+    android:layout_above="@+id/textView2"
     android:layout_centerHorizontal="true"
-    android:layout_marginTop="57dp"
+    android:layout_marginBottom="57dp"
     android:background="@layout/btn_toggle_bg"
     android:checked="true"
     android:onClick="onToggleClicked" />
@@ -30,18 +48,10 @@
     android:id="@+id/textView2"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true"
     android:layout_alignParentBottom="true"
-    android:layout_centerHorizontal="true"
-    android:layout_marginBottom="181dp"
-    android:textAppearance="?android:attr/textAppearanceMedium" />
-
-<TextView
-    android:id="@+id/textView3"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_alignParentTop="true"
-    android:layout_centerHorizontal="true"
-    android:layout_marginTop="23dp"
+    android:layout_marginBottom="70dp"
+    android:text="+id/textView2"
     android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>
