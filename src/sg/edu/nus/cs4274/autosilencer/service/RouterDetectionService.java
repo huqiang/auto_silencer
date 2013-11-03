@@ -39,7 +39,7 @@ public class RouterDetectionService extends IntentService {
 	 */
 	@Override
 	protected void onHandleIntent(Intent intent) {
-		String msg = intent.getStringExtra(PARAM_IN_MSG);
+//		String msg = intent.getStringExtra(PARAM_IN_MSG);
 		String resultTxt = scanWifi();
 //		Broadcast result
 		Intent broadcastIntent = new Intent();

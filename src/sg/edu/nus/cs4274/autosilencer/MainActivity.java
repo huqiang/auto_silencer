@@ -31,7 +31,7 @@ import android.view.View;
 public class MainActivity extends Activity {
 	private RouterFoundReceiver routerFoundReceiver;
 	private OnDownloadReceiver onDownloadReceiver;
-	private final static String SERVER = ":4274";
+	private final static String SERVER = "http://qiang.hu:4274/";
 	private final static int POLLING_INTERVAL = 30;
 	private String[] ROUTERS;
 
@@ -43,6 +43,9 @@ public class MainActivity extends Activity {
 		filter.addCategory(Intent.CATEGORY_DEFAULT);
 		routerFoundReceiver = new RouterFoundReceiver();
 		registerReceiver(routerFoundReceiver, filter);
+		
+		onDownloadReceiver = new OnDownloadReceiver();
+		registerReceiver(onDownloadReceiver, filter);
 
 		Calendar cal = Calendar.getInstance();
 		Intent intent = new Intent(this, RouterDetectionService.class);
@@ -86,19 +89,18 @@ public class MainActivity extends Activity {
 
 		private void onReceivedRouters() {
 			// If not connect to network, silence phone
-			if (true) {
+			if (isNetworkAvailable()) {
 				silencePhone();
 			} else {
-				// TODO when network is available.... Assume only one router
-				// presents.
-				Intent intent = new Intent(this.context, DownloadService.class);
-				for (int i = 0; i < ROUTERS.length; i++) {
-					intent.putExtra(DownloadService.PARAM_IN_MSG, SERVER
-							+ ROUTERS[i]);
-
-				}
-
+				getSchedules();
 			}
+		}
+
+		private void getSchedules() {
+			Intent intent = new Intent(this.context, DownloadService.class);
+				intent.putExtra(DownloadService.PARAM_IN_MSG, SERVER
+						+ ROUTERS);
+			startService(intent);
 		}
 
 		private boolean isNetworkAvailable() {
@@ -125,7 +127,7 @@ public class MainActivity extends Activity {
 			// TODO Auto-generated method stub
 			String routerString = intent
 					.getStringExtra(RouterDetectionService.PARAM_OUT_MSG);
-
+			
 		}
 	}
 

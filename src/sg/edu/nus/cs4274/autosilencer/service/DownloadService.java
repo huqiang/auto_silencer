@@ -17,73 +17,76 @@ import android.content.Intent;
 
 /**
  * @author huqiang
- *
+ * 
  */
 public class DownloadService extends IntentService {
 	public static final String PARAM_IN_MSG = "imsg";
-    public static final String PARAM_OUT_MSG = "omsg";
+	public static final String PARAM_OUT_MSG = "omsg";
+	private final static String SERVER = "http://qiang.hu:4274/";
 
 	/**
 	 * @param name
 	 */
-	
+
 	public DownloadService() {
-        super("DownloadService");
-    }
-	
+		super("DownloadService");
+	}
+
 	public DownloadService(String name) {
 		super(name);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.app.IntentService#onHandleIntent(android.content.Intent)
 	 */
 	@Override
 	protected void onHandleIntent(Intent intent) {
-		String url = intent.getStringExtra(PARAM_IN_MSG);
-		String result;
+		String ids[] = intent.getStringArrayExtra(PARAM_IN_MSG);
+		String result = "";
 		Intent broadcastIntent = new Intent();
 		broadcastIntent.setAction(RouterFoundReceiver.ACTION_RESP);
 		broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
-		try {
-			result = downloadFile(url);
-			broadcastIntent.putExtra(PARAM_OUT_MSG, result);
-		} catch (IOException e) {
-			e.printStackTrace();
-			broadcastIntent.putExtra(PARAM_OUT_MSG, "");
+		for (String id : ids) {
+			try {
+				result += downloadFile(SERVER+id);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
+		broadcastIntent.putExtra(PARAM_OUT_MSG, result);
 		sendBroadcast(broadcastIntent);
-		
-		
+
 	}
-	
+
 	private String downloadFile(String urlStr) throws IOException {
-	    String toReturn = "";
-	    URL url = new URL(urlStr);
-	    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		String toReturn = "";
+		URL url = new URL(urlStr);
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
-	    int responseCode = conn.getResponseCode();
-	    System.out.println("Code: " + responseCode);
+		int responseCode = conn.getResponseCode();
+		System.out.println("Code: " + responseCode);
 
-	    if (responseCode == HttpURLConnection.HTTP_OK) {
+		if (responseCode == HttpURLConnection.HTTP_OK) {
 
-	        BufferedInputStream is = new BufferedInputStream(
-	                conn.getInputStream());
-	        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+			BufferedInputStream is = new BufferedInputStream(
+					conn.getInputStream());
+			BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
-	        String line;
+			String line;
 
-	        while ((line = br.readLine()) != null) {
-	            toReturn += line;
-	        }
+			while ((line = br.readLine()) != null) {
+				toReturn += line;
+			}
 
-	        br.close();
-	        is.close();
-	        conn.disconnect();
+			br.close();
+			is.close();
+			conn.disconnect();
 
-	    } else {
-	        throw new IllegalStateException("HTTP response: " + responseCode);
-	    }
-	    return toReturn;
+		} else {
+			throw new IllegalStateException("HTTP response: " + responseCode);
+		}
+		return toReturn;
 	}
 }

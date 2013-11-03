@@ -6,11 +6,11 @@ var sys        = require('sys')
 var app        = express();
 //var httpServer = http.createServer(app);
 //httpServer.listen(port, "0.0.0.0");
-var routers=[];
-routers[0] = {"name":"CS4274_01", "slientTime": [{"start":1300, "end":1500}]};
-routers[1] = {"name":"CS4274_02", "slientTime": [{"start":1300, "end":1500},{"start":1600, "end":1630}]};
-//routers["CS4274_01"] = [{"start":1300, "end":1500}];
-//routers["CS4274_02"] = [{"start":1300, "end":1500},{"start":1600, "end":1630}];
+var routers={};
+//routers[0] = {"name":"CS4274_01", "slientTime": [{"start":1300, "end":1500}]};
+//routers[1] = {"name":"CS4274_02", "slientTime": [{"start":1300, "end":1500},{"start":1600, "end":1630}]};
+routers["CS4274_01"] = [{"start":1300, "end":1500}];
+routers["CS4274_02"] = [{"start":1300, "end":1500},{"start":1600, "end":1630}];
 var response;
 
 app.use(express.static(__dirname));
