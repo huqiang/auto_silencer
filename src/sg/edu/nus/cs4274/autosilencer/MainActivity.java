@@ -21,6 +21,7 @@ import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -89,8 +90,9 @@ public class MainActivity extends Activity {
 
 		private void onReceivedRouters() {
 			// If not connect to network, silence phone
-			if (isNetworkAvailable()) {
-				silencePhone();
+			if (true) {
+				checkVolStatus();
+				//silencePhone();
 			} else {
 				getSchedules();
 			}
@@ -137,30 +139,18 @@ public class MainActivity extends Activity {
 		TextView displayText = (TextView) findViewById(R.id.textView2);
 		AudioManager audiomanage = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 		if (on) {
-			// Silence the phone
-
-			// Context context = getApplicationContext();
-			// CharSequence text = "Button On!";
-			// int duration = Toast.LENGTH_SHORT;
-
-			// Toast toast = Toast.makeText(context, text, duration);
-			// toast.show();
+	
 
 			displayText.setText("Slient Off");
 
 			audiomanage.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+			checkVolStatus();
 
 		} else {
-			// Silence the phone
 
-			// Context context = getApplicationContext();
-			// CharSequence text = "Button Off!";
-			// int duration = Toast.LENGTH_SHORT;
-
-			// Toast toast = Toast.makeText(context, text, duration);
-			// toast.show();
 			displayText.setText("Slient On");
 			audiomanage.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+			checkVolStatus();
 		}
 	}
 
@@ -170,6 +160,29 @@ public class MainActivity extends Activity {
 
 		TextView displayText = (TextView) findViewById(R.id.textView3);
 		displayText.setText("RINGER_MODE_SILENT");
+	}
+	
+	
+	private void checkVolStatus()
+	{
+		ImageView imgView;
+		imgView = (ImageView) findViewById(R.id.imageView1);
+		AudioManager am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+		TextView displayText = (TextView) findViewById(R.id.textView3);
+		switch (am.getRingerMode()) {
+		    case AudioManager.RINGER_MODE_SILENT:
+		    	imgView.setImageResource(R.drawable.nosound);
+				displayText.setText("RINGER_MODE_SILENT");
+		        break;
+		    case AudioManager.RINGER_MODE_NORMAL:
+		    	imgView.setImageResource(R.drawable.sound);
+				displayText.setText("RINGER_MODE_SOUND");
+		        break;
+		}
+		
+		
+
+		
 	}
 
 }

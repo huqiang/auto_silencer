@@ -54,7 +54,7 @@ public class RouterDetectionService extends IntentService {
 		wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 		if (wifi.isWifiEnabled() == false) {
 			Toast.makeText(getApplicationContext(),
-					"wifi is disabled..making it enabled", Toast.LENGTH_LONG)
+					"wifi is disabled..making it enabled", Toast.LENGTH_SHORT)
 					.show();
 			wifi.setWifiEnabled(true);
 		}
