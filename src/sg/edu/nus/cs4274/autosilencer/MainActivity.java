@@ -163,7 +163,7 @@ public class MainActivity extends Activity {
 			
 		}
 		
-	}.
+	}
 
 	private void silencePhone() {
 		AudioManager audiomanage = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
