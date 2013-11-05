@@ -84,8 +84,8 @@ public class MainActivity extends Activity {
 		// Stop method tracing that the activity started during onCreate()
 		unregisterReceiver(routerFoundReceiver);
 		unregisterReceiver(onDownloadReceiver);
-		unregisterReceiver(silenceReceiver);
-		unregisterReceiver(unSilenceReceiver);
+//		unregisterReceiver(silenceReceiver);
+//		unregisterReceiver(unSilenceReceiver);
 		android.os.Debug.stopMethodTracing();
 	}
 
