@@ -3,6 +3,7 @@ package sg.edu.nus.cs4274.autosilencer;
 import java.util.Calendar;
 import java.util.List;
 
+import sg.edu.nus.cs4274.autosilencer.model.Schedule;
 import sg.edu.nus.cs4274.autosilencer.service.DownloadService;
 import sg.edu.nus.cs4274.autosilencer.service.RouterDetectionService;
 
@@ -35,6 +36,7 @@ public class MainActivity extends Activity {
 	private final static String SERVER = "http://qiang.hu:4274/";
 	private final static int POLLING_INTERVAL = 30;
 	private String[] ROUTERS;
+	private Schedule[] SCHEDULES;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -129,7 +131,8 @@ public class MainActivity extends Activity {
 			// TODO Auto-generated method stub
 			String routerString = intent
 					.getStringExtra(RouterDetectionService.PARAM_OUT_MSG);
-			
+			SCHEDULES = Schedule.fromJSONString(routerString);
+			scheduleEvents();
 		}
 	}
 
@@ -152,6 +155,14 @@ public class MainActivity extends Activity {
 			audiomanage.setRingerMode(AudioManager.RINGER_MODE_SILENT);
 			checkVolStatus();
 		}
+	}
+
+	public void scheduleEvents() {
+		AlarmManager alarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+		for(Schedule s : SCHEDULES){
+			
+		}
+		
 	}
 
 	private void silencePhone() {

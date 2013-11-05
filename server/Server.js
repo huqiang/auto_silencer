@@ -9,8 +9,8 @@ var app        = express();
 var routers={};
 //routers[0] = {"name":"CS4274_01", "slientTime": [{"start":1300, "end":1500}]};
 //routers[1] = {"name":"CS4274_02", "slientTime": [{"start":1300, "end":1500},{"start":1600, "end":1630}]};
-routers["CS4274_01"] = [{"start":1300, "end":1500}];
-routers["CS4274_02"] = [{"start":1300, "end":1500},{"start":1600, "end":1630}];
+routers["CS4274_01"] = [{"title":"CS4274_01_Event_One","start":1300, "end":1500}];
+routers["CS4274_02"] = [{"title":"CS4274_02_Event_One","start":1300, "end":1500},{"title":"CS4274_02_Event_Two","start":1600, "end":1630}];
 var response;
 
 app.use(express.static(__dirname));
