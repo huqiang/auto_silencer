@@ -11,7 +11,8 @@ var routers={};
 //routers[1] = {"name":"CS4274_02", "slientTime": [{"start":1300, "end":1500},{"start":1600, "end":1630}]};
 routers["CS4274_01"] = [{"title":"CS4274_01_Event_One","startHour":13, "startMinute":0, "endHour":15, "endMinute":0}];
 routers["CS4274_02"] = [{"title":"CS4274_02_Event_One","startHour":13, "startMinute":0, "endHour":15, "endMinute":0},{"title":"CS4274_02_Event_Two","startHour":16, "startMinute":0, "endHour":16, "endMinute":30}];
-routers["NUS"] = [{"title":"NUS_TEST","startHour":14, "startMinute":30, "endHour":14, "endMinute":35},{"title":"CS4274_02_Event_Two","startHour":16, "startMinute":0, "endHour":16, "endMinute":30}];
+routers["NUS"] = [{"title":"NUS_TEST","startHour":18, "startMinute":10, "endHour":18, "endMinute":11}];
+//,{"title":"CS4274_02_Event_Two","startHour":16, "startMinute":0, "endHour":16, "endMinute":30}];
 var response;
 
 app.use(express.static(__dirname));
