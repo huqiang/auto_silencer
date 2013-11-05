@@ -13,15 +13,19 @@ import org.json.JSONObject;
  */
 public class Schedule {
 	public String title;
-	public int start;
-	public int end;
+	public int startHour;
+	public int startMinute;
+	public int endHour;
+	public int endMinute;
 	/**
 	 * 
 	 */
-	public Schedule(String title, int start, int end) {
+	public Schedule(String title, int startH, int startM, int endH, int endM) {
 		this.title = title;
-		this.start = start;
-		this.end = end;
+		this.startHour = startH;
+		this.startMinute = startM;
+		this.endHour = endH;
+		this.endMinute = endM;
 	}
 	public static Schedule[] fromJSONString(String routerString) {
 		Schedule[] result = null;
@@ -31,8 +35,10 @@ public class Schedule {
 			for (int i = 0; i < jsonArray.length(); i++) {
 		        JSONObject jsonObject = jsonArray.getJSONObject(i);
 		        result[i] = new Schedule(jsonObject.getString("title"),
-		        		jsonObject.getInt("start"),
-		        		jsonObject.getInt("end"));
+		        		jsonObject.getInt("startHour"),
+		        		jsonObject.getInt("startMinute"),
+		        		jsonObject.getInt("endHour"),
+		        		jsonObject.getInt("endMinute"));
 		      }
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
