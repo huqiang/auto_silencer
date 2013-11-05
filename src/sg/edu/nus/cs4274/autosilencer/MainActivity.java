@@ -67,19 +67,6 @@ public class MainActivity extends Activity {
 		onDownloadReceiver = new OnDownloadReceiver();
 		registerReceiver(onDownloadReceiver, filterDownloaded);
 
-		// Register SilenceReceiver
-//		IntentFilter filterSilencePhone = new IntentFilter(
-//				SilenceReceiver.ACTION_RESP);
-////		filterSilencePhone.addCategory(Intent.CATEGORY_DEFAULT);
-//		silenceReceiver = new SilenceReceiver();
-//		registerReceiver(silenceReceiver, filterSilencePhone);
-		
-		// Register unSilenceReceiver
-//		IntentFilter filterUnSilencePhone = new IntentFilter(
-//				UnSilenceReceiver.ACTION_RESP);
-//		filterUnSilencePhone.addCategory(Intent.CATEGORY_DEFAULT);
-//		unSilenceReceiver = new UnSilenceReceiver();
-//		registerReceiver(unSilenceReceiver, filterUnSilencePhone);
 		
 		cal = Calendar.getInstance();
 		Intent intent = new Intent(this, RouterDetectionService.class);
@@ -173,41 +160,6 @@ public class MainActivity extends Activity {
 		}
 	}
 
-//	public class SilenceReceiver extends BroadcastReceiver {
-//
-//		/**
-//		 * 
-//		 */
-//		public static final String ACTION_RESP = "sg.edu.nus.cs4274.intent.action.SILENCEPHONE";
-//
-//		public SilenceReceiver() {
-//			super();
-//		}
-//
-//		@Override
-//		public void onReceive(Context context, Intent intent) {
-//			Log.d("Receiver", "Received SilenceReceiver!!");
-//			silencePhone();
-//		}
-//	}
-//
-//	public class UnSilenceReceiver extends BroadcastReceiver {
-//
-//		/**
-//		 * 
-//		 */
-//		public static final String ACTION_RESP = "sg.edu.nus.cs4274.intent.action.UNSILENCEPHONE";
-//
-//		public UnSilenceReceiver() {
-//			super();
-//		}
-//
-//		@Override
-//		public void onReceive(Context context, Intent intent) {
-//			Log.d("Receiver", "Received UNSilenceReceiver!!");
-//			unSilencePhone();
-//		}
-//	}
 
 	public void onToggleClicked(View view) {
 		// Is the toggle on?
