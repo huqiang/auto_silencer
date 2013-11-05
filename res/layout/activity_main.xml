@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#000000"
     tools:context=".MainActivity" >
 
 <TextView
@@ -12,7 +13,8 @@
     android:layout_centerHorizontal="true"
     android:layout_marginTop="35dp"
     android:text="+id/textView3"
-    android:textAppearance="?android:attr/textAppearanceMedium" />
+    android:textAppearance="?android:attr/textAppearanceMedium"
+    android:textColor="#FFFFFF" />
 
 <ImageView
     android:id="@+id/imageView1"
@@ -30,6 +32,7 @@
     android:layout_centerHorizontal="true"
     android:layout_marginBottom="75dp"
     android:text="Tap button to toggle silent on/off."
+    android:textColor="#FFFFFF"
     android:textAppearance="?android:attr/textAppearanceMedium" />
 
 <ToggleButton
@@ -52,6 +55,7 @@
     android:layout_alignParentBottom="true"
     android:layout_marginBottom="70dp"
     android:text="+id/textView2"
+    android:textColor="#FFFFFF"
     android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>
