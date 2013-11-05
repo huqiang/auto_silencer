@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" /> 
 
     <application
         android:allowBackup="true"
@@ -29,6 +30,17 @@
         </activity>
         <service android:name=".service.RouterDetectionService"></service>
         <service android:name=".service.DownloadService"></service>
+        <receiver android:name=".receiver.SilenceReceiver">
+            <intent-filter>
+                <action android:name="sg.edu.nus.cs4274.intent.action.SILENCEPHONE" />
+            </intent-filter>
+        </receiver>
+        
+        <receiver android:name=".receiver.UnSilenceReceiver">
+            <intent-filter>
+                <action android:name="sg.edu.nus.cs4274.intent.action.UNSILENCEPHONE" />
+            </intent-filter>
+        </receiver>
         
     </application>
 

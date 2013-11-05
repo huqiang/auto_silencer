@@ -10,10 +10,12 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import sg.edu.nus.cs4274.autosilencer.MainActivity.OnDownloadReceiver;
 import sg.edu.nus.cs4274.autosilencer.MainActivity.RouterFoundReceiver;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.util.Log;
 
 /**
  * @author huqiang
@@ -46,16 +48,18 @@ public class DownloadService extends IntentService {
 		String ids[] = intent.getStringArrayExtra(PARAM_IN_MSG);
 		String result = "";
 		Intent broadcastIntent = new Intent();
-		broadcastIntent.setAction(RouterFoundReceiver.ACTION_RESP);
+		broadcastIntent.setAction(OnDownloadReceiver.ACTION_RESP);
 		broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
 		for (String id : ids) {
 			try {
+				Log.d("Download", "Downloading: "+SERVER+id);
 				result += downloadFile(SERVER+id);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 		broadcastIntent.putExtra(PARAM_OUT_MSG, result);
+		Log.d("Download", "result: "+ result);
 		sendBroadcast(broadcastIntent);
 
 	}
