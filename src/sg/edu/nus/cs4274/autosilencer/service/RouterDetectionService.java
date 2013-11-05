@@ -3,6 +3,7 @@
  */
 package sg.edu.nus.cs4274.autosilencer.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import sg.edu.nus.cs4274.autosilencer.MainActivity.RouterFoundReceiver;
@@ -40,17 +41,17 @@ public class RouterDetectionService extends IntentService {
 	@Override
 	protected void onHandleIntent(Intent intent) {
 //		String msg = intent.getStringExtra(PARAM_IN_MSG);
-		String resultTxt = scanWifi();
+		String[] result = scanWifi();
 //		Broadcast result
 		Intent broadcastIntent = new Intent();
 		broadcastIntent.setAction(RouterFoundReceiver.ACTION_RESP);
 		broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
-		broadcastIntent.putExtra(PARAM_OUT_MSG, resultTxt);
+		broadcastIntent.putExtra(PARAM_OUT_MSG, result);
 		sendBroadcast(broadcastIntent);
 	}
 
-	private String scanWifi(){
-		String result = "";
+	private String[] scanWifi(){
+		ArrayList<String> result = new ArrayList<String>();
 		wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 		if (wifi.isWifiEnabled() == false) {
 			Toast.makeText(getApplicationContext(),
@@ -61,11 +62,11 @@ public class RouterDetectionService extends IntentService {
 		scanResults = wifi.getScanResults();
 
 		for (ScanResult r : scanResults) {
-			if (r.SSID.startsWith("NUS")){
-				result +=r.SSID+" "; 
+			if (r.SSID.startsWith("NUS") && !result.contains(r.SSID)){
+				result.add(r.SSID);
 			}
 		}
 		
-		return result;
+		return result.toArray(new String[result.size()]);
 	}
 }
