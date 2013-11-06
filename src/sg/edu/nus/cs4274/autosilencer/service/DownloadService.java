@@ -24,8 +24,9 @@ import android.util.Log;
 public class DownloadService extends IntentService {
 	public static final String PARAM_IN_MSG = "imsg";
 	public static final String PARAM_OUT_MSG = "omsg";
-	private final static String SERVER = "http://qiang.hu:4274/";
-
+	//private final static String SERVER = "http://qiang.hu:4274/";
+	//Change IP address here.
+	private final static String SERVER = "http://172.28.180.218:4274/";
 	/**
 	 * @param name
 	 */

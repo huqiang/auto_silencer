@@ -1,7 +1,10 @@
 package sg.edu.nus.cs4274.autosilencer;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 import sg.edu.nus.cs4274.autosilencer.model.Schedule;
 import sg.edu.nus.cs4274.autosilencer.receiver.SilenceReceiver;
@@ -110,6 +113,7 @@ public class MainActivity extends Activity {
 		}
 
 		private void onReceivedRouters() {
+			checkVolStatus();
 			// If not connect to network, silence phone
 			if (!isNetworkAvailable()) {
 				// if (true) {
@@ -215,7 +219,8 @@ public class MainActivity extends Activity {
 						pendingUnSilenceIntent);
 			}else if(cal.before(end)){
 				//Silence phone when now is in the middle of event, unsilence after event ends.
-				silencePhone();				
+				silencePhone();		
+				checkVolStatus();
 				Intent unsilenceIntent = new Intent(getApplicationContext(), UnSilenceReceiver.class);
 				unsilenceIntent.setAction(UnSilenceReceiver.ACTION_RESP);
 				unsilenceIntent.addCategory(Intent.CATEGORY_DEFAULT);
@@ -225,8 +230,18 @@ public class MainActivity extends Activity {
 			}else{
 				//Nothing to do. If the event is ended already.
 			}
+			//display stuff
+		    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MM/yyyy");
+		    sdf.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+//		    sdf.format(start.getTime());
+		    
+			TextView displayText = (TextView) findViewById(R.id.textView4);
+			displayText.setText("slient From " +sdf.format(start.getTime())+ " to "+ sdf.format(end.getTime()) );
+			
 		}
-
+		
+		
+		
 	}
 
 	public static void silencePhone() {
@@ -243,6 +258,8 @@ public class MainActivity extends Activity {
 
 		TextView displayText = (TextView) mainActivity.findViewById(R.id.textView3);
 		displayText.setText("RINGER_MODE_NORMAL");
+
+		
 	}
 
 	private void checkVolStatus() {
