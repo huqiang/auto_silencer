@@ -1,8 +1,6 @@
 package sg.edu.nus.cs4274.autosilencer;
 
 import java.util.Calendar;
-import java.util.List;
-
 import sg.edu.nus.cs4274.autosilencer.model.Schedule;
 import sg.edu.nus.cs4274.autosilencer.receiver.SilenceReceiver;
 import sg.edu.nus.cs4274.autosilencer.receiver.UnSilenceReceiver;
@@ -13,23 +11,19 @@ import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.wifi.ScanResult;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
-import android.app.Activity;
-import android.view.Menu;
 import android.view.View;
 
 public class MainActivity extends Activity {
@@ -37,6 +31,7 @@ public class MainActivity extends Activity {
 	private OnDownloadReceiver onDownloadReceiver;
 	private SilenceReceiver silenceReceiver;
 	private UnSilenceReceiver unSilenceReceiver;
+	private LocUpdateReceiver locUpdateReceiver;
 	private AlarmManager alarm;
 	private Calendar cal;
 	private final static String SERVER = "http://qiang.hu:4274/";
@@ -67,6 +62,7 @@ public class MainActivity extends Activity {
 		onDownloadReceiver = new OnDownloadReceiver();
 		registerReceiver(onDownloadReceiver, filterDownloaded);
 
+		registerReceiver(locUpdateReceiver,new IntentFilter("COMBINATION_LOCATION_MESSAGE"));
 		
 		cal = Calendar.getInstance();
 		Intent intent = new Intent(this, RouterDetectionService.class);
@@ -74,6 +70,16 @@ public class MainActivity extends Activity {
 
 		alarm.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(),
 				POLLING_INTERVAL * 1000, pintent);
+		
+		Intent mIntent = new Intent("android.intent.action,MAIN");
+		ComponentName comp = new ComponentName(
+				"com.fyp.locationfinder",
+				"com.fyp.locationfinder.CombinationService"
+				);
+		mIntent.setComponent(comp);
+		mIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+		mIntent.addCategory("android.intent.category.LAUNCHER");
+		startService(mIntent);
 
 	}
 
@@ -84,11 +90,67 @@ public class MainActivity extends Activity {
 		// Stop method tracing that the activity started during onCreate()
 		unregisterReceiver(routerFoundReceiver);
 		unregisterReceiver(onDownloadReceiver);
+		unregisterReceiver(locUpdateReceiver);
 //		unregisterReceiver(silenceReceiver);
 //		unregisterReceiver(unSilenceReceiver);
 		android.os.Debug.stopMethodTracing();
 	}
 
+	public class LocUpdateReceiver extends BroadcastReceiver {
+
+		 @Override
+		    public void onReceive(Context context, Intent intent) {
+		    	String result = intent.getStringExtra("location");
+		    	
+		    	
+		    	//Intent startCoalition=new Intent(this.getApplicationContext(),LocationFinderService.class);
+		    	//coalition=new Intent
+				
+				
+				Toast.makeText(getApplicationContext(),result,Toast.LENGTH_LONG).show();
+		    	//Log.e("richard",result);
+//		    	Floor floor = new Floor();
+//		    	
+//		    	// WRITE CODES HERE
+//		    	// Hint 1: You need to populate the attributes of the floor object with data received from broadcast
+//		    	// Hint 2: You need to populate the indoorPosition with data received from broadcast
+//				int fId = intent.getIntExtra("floorID",1);
+//				switch(fId)
+//				{
+//				case -1:
+//					floor.id = "COM1_B1.jpg";
+//					
+//					break;
+//				case 1:
+//					floor.id = "COM1_L1.jpg";
+//					
+//			    
+//					break;
+//				case 2:
+//					floor.id = "COM1_L2.jpg";
+//					break;
+//				
+//				}
+//				//ricard's modification
+//				//coalition.putExtra("result",floor.id);
+//				//startService(coalition);
+//				
+//				floor.location = new GeoPoint(1294949,103773838); 
+//						//new GeoPoint(intent.getIntExtra("floorLocationX",-1),intent.getIntExtra("floorLocationY",-1));
+//		    	floor.name = "";//floor.id.split(".")[0];
+//		    	
+//		    	indoorPosition = new Point();
+//				indoorPosition.x = intent.getIntExtra("userPositionX",-1);
+//				indoorPosition.y = intent.getIntExtra("userPositionY",-1);
+//				
+//				Mark mark = new Mark(floor);
+//				markOverlay.removeAll();
+//				markOverlay.addMark(mark);
+//				mark.showInfo();
+		    }
+		
+	}
+	
 	public class RouterFoundReceiver extends BroadcastReceiver {
 
 		/**
