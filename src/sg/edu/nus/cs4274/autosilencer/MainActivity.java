@@ -378,12 +378,7 @@ public class MainActivity extends Activity {
 		
 		TextView displayText = (TextView) mainActivity.findViewById(R.id.textView3);
 		displayText.setText("RINGER_MODE_NORMAL");
-		
-<<<<<<< HEAD
-
-=======
 		mainActivity.checkVolStatus();
->>>>>>> c2681d680e0f4d2b19b66040648160100e7889df
 	}
 
 	private void checkVolStatus() {
