@@ -24,9 +24,8 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_above="@+id/textView1"
-            android:layout_alignLeft="@+id/textView4"
-            android:layout_alignRight="@+id/textView4"
             android:layout_below="@+id/textView4"
+            android:layout_centerHorizontal="true"
             android:listSelector="@android:color/transparent"
             android:textColor="#FFFFFF" >
   
@@ -63,17 +62,6 @@
                 android:layout_marginTop="18dp"
                 android:src="@drawable/nosound" />
 
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/imageView1"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="23dp"
-                android:text="Your Device will be slient From XXXX to XXXX"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="#FFFFFF" />
-
             <ToggleButton
                 android:id="@+id/togglebutton"
                 style="@style/YourThemeName"
@@ -86,6 +74,14 @@
                 android:checked="true"
                 android:onClick="onToggleClicked" />
 
-            
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/imageView1"
+                android:layout_centerHorizontal="true"
+                android:text="Schedules:"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#FFFFFF" />
 
 </RelativeLayout>
