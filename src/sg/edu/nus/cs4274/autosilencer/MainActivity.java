@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
+import sg.edu.nus.cs4274.autosilencer.model.Coor;
 import sg.edu.nus.cs4274.autosilencer.model.Schedule;
 import sg.edu.nus.cs4274.autosilencer.receiver.SilenceReceiver;
 import sg.edu.nus.cs4274.autosilencer.receiver.UnSilenceReceiver;
@@ -43,7 +44,8 @@ public class MainActivity extends Activity {
 	private AlarmManager alarm;
 	private Calendar cal;
 	private final static String SERVER = "http://qiang.hu:4274/";
-	private final static int POLLING_INTERVAL = 30;
+	private final static int POLLING_INTERVAL_SHORT = 600;
+	private final static int POLLING_INTERVAL_LONG = 1800;
 	private String[] ROUTERS;
 	private Schedule[] SCHEDULES;
 	private static MainActivity mainActivity;
@@ -55,7 +57,9 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
+		checkVolStatus();
 		alarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+		
 		// Register routerFoundReceiver
 		IntentFilter filterRouterFound = new IntentFilter(
 				RouterFoundReceiver.ACTION_RESP);
@@ -70,6 +74,7 @@ public class MainActivity extends Activity {
 		onDownloadReceiver = new OnDownloadReceiver();
 		registerReceiver(onDownloadReceiver, filterDownloaded);
 
+		locUpdateReceiver = new LocUpdateReceiver();
 		registerReceiver(locUpdateReceiver,new IntentFilter("COMBINATION_LOCATION_MESSAGE"));
 		
 		cal = Calendar.getInstance();
@@ -77,7 +82,7 @@ public class MainActivity extends Activity {
 		PendingIntent pintent = PendingIntent.getService(this, 0, intent, 0);
 
 		alarm.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(),
-				POLLING_INTERVAL * 1000, pintent);
+				POLLING_INTERVAL_SHORT * 1000, pintent);
 		
 		Intent mIntent = new Intent("android.intent.action,MAIN");
 		ComponentName comp = new ComponentName(
@@ -115,7 +120,20 @@ public class MainActivity extends Activity {
 		    	//coalition=new Intent
 				
 				
-				Toast.makeText(getApplicationContext(),result,Toast.LENGTH_LONG).show();
+//		    	intent.getse
+				String coorStr = intent.getStringExtra("coor");
+				int x = intent.getIntExtra("userPositionX",-1);
+				int y = intent.getIntExtra("userPositionY",-1);
+				Toast.makeText(getApplicationContext(),x + " " + y,Toast.LENGTH_LONG).show();
+				
+				if ( x < 520){
+					silencePhone();
+				}else{
+					unSilencePhone();
+				}
+//				Coor coor = new Coor();
+//				coor.fromJSON(coorStr);
+//				Toast.makeText(getApplicationContext(),""+coor.X+" "+coor.Y+"##"+result,Toast.LENGTH_LONG).show();
 		    	//Log.e("richard",result);
 //		    	Floor floor = new Floor();
 //		    	
@@ -180,12 +198,10 @@ public class MainActivity extends Activity {
 		}
 
 		private void onReceivedRouters() {
-			checkVolStatus();
 			// If not connect to network, silence phone
 			if (!isNetworkAvailable()) {
 				// if (true) {
 				silencePhone();
-				checkVolStatus();
 			} else {
 				getSchedules();
 			}
@@ -223,11 +239,11 @@ public class MainActivity extends Activity {
 					.getStringExtra(DownloadService.PARAM_OUT_MSG);
 			Log.d("JSON", routerString);
 			SCHEDULES = Schedule.fromJSONString(routerString);
-			scheduleEvents();
 			
-			Intent intent1 = new Intent(getApplicationContext(), RouterDetectionService.class);
-			PendingIntent pintent = PendingIntent.getService(getApplicationContext(), 0, intent1, 0);
-			alarm.cancel(pintent);
+			if(SCHEDULES.length > 0){
+				scheduleEvents();
+				changePollingInterval(POLLING_INTERVAL_LONG);
+			}
 		}
 	}
 
@@ -242,15 +258,13 @@ public class MainActivity extends Activity {
 			displayText.setText("Slient Off");
 
 			audiomanage.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-			checkVolStatus();
 
 		} else {
 
 			displayText.setText("Slient On");
 			audiomanage.setRingerMode(AudioManager.RINGER_MODE_SILENT);
-			checkVolStatus();
 		}
-		
+	
 		ListView lv;
 		lv = (ListView) findViewById(R.id.displayListView);
 		ArrayList<String> displayArrayList = new ArrayList<String>();
@@ -261,6 +275,8 @@ public class MainActivity extends Activity {
 				new ArrayAdapter<String>(this, R.layout.simplerow,displayArrayList);
 		lv.setAdapter(arrayAdapter);
 		
+
+		checkVolStatus();
 	}
 
 	public void scheduleEvents() {
@@ -268,6 +284,7 @@ public class MainActivity extends Activity {
 		Calendar start = Calendar.getInstance();
 		Calendar end = Calendar.getInstance();
 		int index = 0;
+		if (SCHEDULES == null) return;
 		for (Schedule s : SCHEDULES) {
 			start.set(Calendar.HOUR_OF_DAY, s.startHour);
 			start.set(Calendar.MINUTE, s.startMinute);
@@ -298,7 +315,6 @@ public class MainActivity extends Activity {
 			}else if(cal.before(end)){
 				//Silence phone when now is in the middle of event, unsilence after event ends.
 				silencePhone();		
-				checkVolStatus();
 				Intent unsilenceIntent = new Intent(getApplicationContext(), UnSilenceReceiver.class);
 				unsilenceIntent.setAction(UnSilenceReceiver.ACTION_RESP);
 				unsilenceIntent.addCategory(Intent.CATEGORY_DEFAULT);
@@ -337,19 +353,37 @@ public class MainActivity extends Activity {
 	public static void silencePhone() {
 		AudioManager audiomanage = (AudioManager) mainActivity.getSystemService(Context.AUDIO_SERVICE);
 		audiomanage.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+		
+		mainActivity.changePollingInterval(POLLING_INTERVAL_LONG);
 
 		TextView displayText = (TextView) mainActivity.findViewById(R.id.textView3);
 		displayText.setText("RINGER_MODE_SILENT");
+		
+		mainActivity.checkVolStatus();
+	}
+
+	public void changePollingInterval(int pollingIntervalLong) {
+		Intent intent1 = new Intent(mainActivity.getApplicationContext(), RouterDetectionService.class);
+		PendingIntent pintent = PendingIntent.getService(mainActivity.getApplicationContext(), 0, intent1, 0);
+		mainActivity.alarm.cancel(pintent);
+		mainActivity.alarm.setRepeating(AlarmManager.RTC_WAKEUP, mainActivity.cal.getTimeInMillis(),
+				pollingIntervalLong * 1000, pintent);
 	}
 
 	public static void unSilencePhone() {
 		AudioManager audiomanage = (AudioManager) mainActivity.getSystemService(Context.AUDIO_SERVICE);
 		audiomanage.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
 
+		mainActivity.changePollingInterval(POLLING_INTERVAL_SHORT);
+		
 		TextView displayText = (TextView) mainActivity.findViewById(R.id.textView3);
 		displayText.setText("RINGER_MODE_NORMAL");
 		
+<<<<<<< HEAD
 
+=======
+		mainActivity.checkVolStatus();
+>>>>>>> c2681d680e0f4d2b19b66040648160100e7889df
 	}
 
 	private void checkVolStatus() {
