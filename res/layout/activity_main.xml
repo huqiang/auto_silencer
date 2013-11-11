@@ -5,27 +5,6 @@
     android:background="#000000"
     tools:context=".MainActivity" >
 
-    <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView3"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        />
-
-    <ToggleButton
-        android:id="@+id/togglebutton"
-        style="@style/YourThemeName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/textView2"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="57dp"
-        android:background="@layout/btn_toggle_bg"
-        android:checked="true"
-        android:onClick="onToggleClicked" />
-
 
 
     <TextView
@@ -39,6 +18,19 @@
         android:text="Tap button to \ntoggle silent on/off."
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#FFFFFF" />
+    
+        <ListView
+            android:id="@+id/displayListView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_above="@+id/textView1"
+            android:layout_alignLeft="@+id/textView4"
+            android:layout_alignRight="@+id/textView4"
+            android:layout_below="@+id/textView4"
+            android:listSelector="@android:color/transparent"
+            android:textColor="#FFFFFF" >
+  
+    </ListView> 
     
         <TextView
         android:id="@+id/textView2"
@@ -62,15 +54,38 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#FFFFFF" />
 
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView3"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="18dp"
+                android:src="@drawable/nosound" />
+
             <TextView
                 android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/textView1"
+                android:layout_below="@+id/imageView1"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="15dp"
+                android:layout_marginTop="23dp"
                 android:text="Your Device will be slient From XXXX to XXXX"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="#FFFFFF" />
+
+            <ToggleButton
+                android:id="@+id/togglebutton"
+                style="@style/YourThemeName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/textView2"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="19dp"
+                android:background="@layout/btn_toggle_bg"
+                android:checked="true"
+                android:onClick="onToggleClicked" />
+
+            
 
 </RelativeLayout>

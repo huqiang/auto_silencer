@@ -1,6 +1,7 @@
 package sg.edu.nus.cs4274.autosilencer;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
@@ -25,7 +26,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -247,6 +250,17 @@ public class MainActivity extends Activity {
 			audiomanage.setRingerMode(AudioManager.RINGER_MODE_SILENT);
 			checkVolStatus();
 		}
+		
+		ListView lv;
+		lv = (ListView) findViewById(R.id.displayListView);
+		ArrayList<String> displayArrayList = new ArrayList<String>();
+		displayArrayList.add("The Device will be slient from XX:XX to XX:XX");
+		displayArrayList.add("The Device will be slient from YY:XX to YY:XX");
+		
+		ArrayAdapter<String> arrayAdapter =
+				new ArrayAdapter<String>(this, R.layout.simplerow,displayArrayList);
+		lv.setAdapter(arrayAdapter);
+		
 	}
 
 	public void scheduleEvents() {
@@ -302,6 +316,18 @@ public class MainActivity extends Activity {
 			TextView displayText = (TextView) findViewById(R.id.textView4);
 			displayText.setText("slient From " +sdf.format(start.getTime())+ " to "+ sdf.format(end.getTime()) );
 			
+			ListView lv;
+			lv = (ListView) findViewById(R.id.displayListView);
+			ArrayList<String> displayArrayList = new ArrayList<String>();
+			displayArrayList.add("Test1");
+			displayArrayList.add("Test2");
+			ArrayAdapter<String> arrayAdpater =
+					new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,displayArrayList);
+			lv.setAdapter(arrayAdpater);
+			
+			
+			
+			
 		}
 		
 		
@@ -322,6 +348,8 @@ public class MainActivity extends Activity {
 
 		TextView displayText = (TextView) mainActivity.findViewById(R.id.textView3);
 		displayText.setText("RINGER_MODE_NORMAL");
+		
+
 	}
 
 	private void checkVolStatus() {
