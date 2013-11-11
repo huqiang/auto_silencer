@@ -43,7 +43,7 @@ public class MainActivity extends Activity {
 	private LocUpdateReceiver locUpdateReceiver;
 	private AlarmManager alarm;
 	private Calendar cal;
-	private final static String SERVER = "http://qiang.hu:4274/";
+	//private final static String SERVER = "http://172.28.178.46:4274/";
 	private final static int POLLING_INTERVAL_SHORT = 600;
 	private final static int POLLING_INTERVAL_LONG = 1800;
 	private String[] ROUTERS;
@@ -264,16 +264,6 @@ public class MainActivity extends Activity {
 			displayText.setText("Slient On");
 			audiomanage.setRingerMode(AudioManager.RINGER_MODE_SILENT);
 		}
-	
-		ListView lv;
-		lv = (ListView) findViewById(R.id.displayListView);
-		ArrayList<String> displayArrayList = new ArrayList<String>();
-		displayArrayList.add("The Device will be slient from XX:XX to XX:XX");
-		displayArrayList.add("The Device will be slient from YY:XX to YY:XX");
-		
-		ArrayAdapter<String> arrayAdapter =
-				new ArrayAdapter<String>(this, R.layout.simplerow,displayArrayList);
-		lv.setAdapter(arrayAdapter);
 		
 
 		checkVolStatus();
@@ -335,8 +325,7 @@ public class MainActivity extends Activity {
 			ListView lv;
 			lv = (ListView) findViewById(R.id.displayListView);
 			ArrayList<String> displayArrayList = new ArrayList<String>();
-			displayArrayList.add("Test1");
-			displayArrayList.add("Test2");
+			displayArrayList.add("slient From " +sdf.format(start.getTime())+ " to "+ sdf.format(end.getTime()));
 			ArrayAdapter<String> arrayAdpater =
 					new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,displayArrayList);
 			lv.setAdapter(arrayAdpater);
