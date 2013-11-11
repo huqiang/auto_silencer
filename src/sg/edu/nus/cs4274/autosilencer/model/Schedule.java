@@ -3,9 +3,16 @@
  */
 package sg.edu.nus.cs4274.autosilencer.model;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.TimeZone;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import sg.edu.nus.cs4274.autosilencer.R;
+import android.widget.TextView;
 
 /**
  * @author huqiang
@@ -44,6 +51,29 @@ public class Schedule {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		return result;
+	}
+	
+	public String toString(){
+		String result = "Silent from ";
+		Calendar cal = Calendar.getInstance();
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MM/yyyy");
+	    sdf.setTimeZone(TimeZone.getTimeZone("GMT+8"));
+	    
+	    cal.set(Calendar.HOUR_OF_DAY, this.startHour);
+		cal.set(Calendar.MINUTE, this.startMinute);
+		cal.set(Calendar.SECOND, 0);
+		
+		result += sdf.format(cal.getTime());
+		result += " to ";
+		
+		cal.set(Calendar.HOUR_OF_DAY, this.endHour);
+		cal.set(Calendar.MINUTE, this.endMinute);
+		cal.set(Calendar.SECOND, 0);
+		
+		result += sdf.format(cal.getTime());
 		
 		return result;
 	}

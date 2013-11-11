@@ -242,6 +242,7 @@ public class MainActivity extends Activity {
 			
 			if(SCHEDULES.length > 0){
 				scheduleEvents();
+				updateListView();
 				changePollingInterval(POLLING_INTERVAL_LONG);
 			}
 		}
@@ -264,19 +265,22 @@ public class MainActivity extends Activity {
 			displayText.setText("Slient On");
 			audiomanage.setRingerMode(AudioManager.RINGER_MODE_SILENT);
 		}
+
+		checkVolStatus();
+	}
 	
-		ListView lv;
-		lv = (ListView) findViewById(R.id.displayListView);
+	private void updateListView(){
+		ListView lv = (ListView) findViewById(R.id.displayListView);
 		ArrayList<String> displayArrayList = new ArrayList<String>();
-		displayArrayList.add("The Device will be slient from XX:XX to XX:XX");
-		displayArrayList.add("The Device will be slient from YY:XX to YY:XX");
+		for (Schedule s : SCHEDULES){
+			
+			displayArrayList.add(s.toString());
+		}
 		
 		ArrayAdapter<String> arrayAdapter =
 				new ArrayAdapter<String>(this, R.layout.simplerow,displayArrayList);
 		lv.setAdapter(arrayAdapter);
 		
-
-		checkVolStatus();
 	}
 
 	public void scheduleEvents() {
@@ -329,17 +333,17 @@ public class MainActivity extends Activity {
 		    sdf.setTimeZone(TimeZone.getTimeZone("GMT+8"));
 //		    sdf.format(start.getTime());
 		    
-			TextView displayText = (TextView) findViewById(R.id.textView4);
-			displayText.setText("slient From " +sdf.format(start.getTime())+ " to "+ sdf.format(end.getTime()) );
-			
-			ListView lv;
-			lv = (ListView) findViewById(R.id.displayListView);
-			ArrayList<String> displayArrayList = new ArrayList<String>();
-			displayArrayList.add("Test1");
-			displayArrayList.add("Test2");
-			ArrayAdapter<String> arrayAdpater =
-					new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,displayArrayList);
-			lv.setAdapter(arrayAdpater);
+//			TextView displayText = (TextView) findViewById(R.id.textView4);
+//			displayText.setText("slient From " +sdf.format(start.getTime())+ " to "+ sdf.format(end.getTime()) );
+//			
+//			ListView lv;
+//			lv = (ListView) findViewById(R.id.displayListView);
+//			ArrayList<String> displayArrayList = new ArrayList<String>();
+//			displayArrayList.add("Test1");
+//			displayArrayList.add("Test2");
+//			ArrayAdapter<String> arrayAdpater =
+//					new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,displayArrayList);
+//			lv.setAdapter(arrayAdpater);
 			
 			
 			
