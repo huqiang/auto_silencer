@@ -43,6 +43,11 @@
             </intent-filter>
         </receiver>
         
+        <receiver android:name=".receiver.ResumePollingReceiver">
+            <intent-filter>
+                <action android:name="sg.edu.nus.cs4274.intent.action.RESUME_POLLING" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

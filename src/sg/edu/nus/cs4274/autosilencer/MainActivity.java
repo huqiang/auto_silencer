@@ -116,16 +116,36 @@ public class MainActivity extends Activity {
 			displayText.setText("Slient Off");
 
 			audiomanage.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+			delayPolling();
 
 		} else {
 
 			displayText.setText("Slient On");
 			audiomanage.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+			delayPolling();
 		}
 
 		checkVolStatus();
 	}
 
+	private void delayPolling() {
+		alarm.cancel(pollingPIntent);
+		Intent resumeIntent = new Intent(
+				this,
+				sg.edu.nus.cs4274.autosilencer.receiver.ResumePollingReceiver.class);
+		resumeIntent.setClass(this, SilenceReceiver.class);
+		// silenceIntent.addCategory(Intent.CATEGORY_DEFAULT);
+		PendingIntent pendingResumeIntent = PendingIntent
+				.getBroadcast(getApplicationContext(), 4274,
+						resumeIntent, PendingIntent.FLAG_ONE_SHOT);
+		alarm.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+3600000,
+				pendingResumeIntent);
+		
+	}
+
+	public void resumePolling(){
+		changePollingInterval(POLLING_INTERVAL_SHORT);
+	}
 	private void updateListView() {
 		ListView lv = (ListView) findViewById(R.id.displayListView);
 		ArrayList<String> displayArrayList = new ArrayList<String>();
