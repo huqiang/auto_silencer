@@ -1,0 +1,101 @@
+<!DOCTYPE HTML>
+<html lan="en">
+	<head>
+		<link rel="stylesheet" type="text/css" href="./libs/css/bootstrap.css"/>
+		<script type="text/javascript" src="./libs/jquery-1.10.2.min.js"></script>
+		<script src="./libs/jquery.form.js"></script> 
+		<script type="text/javascript" src="./libs/jquery-ui.js"></script>
+		<script type="text/javascript">
+
+			var PATH_TO_IMAGE_FOLDER = "./image/";
+			var DEBUG;
+			$(document).ready(function(){
+				$("#imgInp").change(function(){
+					readURL(this);
+				});	
+
+				$('#form1').ajaxForm({
+					success: function (result) {
+						DEBUG = result;
+						console.log(result);
+						displayEvents(JSON.parse(result));
+					}
+				});
+
+				$("#rf-btn").click(function(){
+					var checkboxes = $("input[type='checkbox']:checked");
+					var rfs=[];
+					for(var i = 0; i < checkboxes.length; i++){
+						rfs[i] = checkboxes[i].value;
+					}
+					$.ajax({
+						type: 	"POST",
+						url: 	"/rf",
+						data: 	{relevant:rfs},
+						success: function(result){
+							displayImages(JSON.parse(result.images));
+						} 
+					});
+				});
+
+            }); 
+	
+			function readURL(input) {
+				if (input.files && input.files[0]) {
+					var reader = new FileReader();
+					reader.onload = function (e) {
+						$('#previewImage').attr('src', e.target.result);
+						$('#previewImage').css("width", 300);
+						$('#previewImage').css("display", "block");
+					}
+					reader.readAsDataURL(input.files[0]);
+				}
+			}
+
+			function displayEvents(events){
+				$('tbody').remove();
+				if (events == []){
+				}
+				else{
+					var table_events = $("#table_events");
+					table_events.append($('<tr><th>SSID</th><th>Event</th><th>Location</th><th>Start Time</th><th>End Time</th></tr>'));
+					for(i = 0; i < events.length; i++){
+						var e = events[i];
+						for(var j = 0; j < e.length; j++){
+							var tr = $('<tr'+" col="+i+'/>');
+							tr.append($('<td>'+e[i]["ssid"]+'</td>'));
+							tr.append($('<td>'+e[i]["title"]+'</td>'));
+							tr.append($('<td>'+e[i]["position_name"]+'</td>'));
+							tr.append($('<td>'+e[i]["startHour"]+':'+e[i]["startMinute"]+'</td>'));
+							tr.append($('<td>'+e[i]["endHour"]+':'+e[i]["endMinute"]+'</td>'));
+							$("#table_events").append(tr);	
+						}
+						
+					}
+				}
+			}
+		</script>
+		
+	</head>
+	<body>
+		<section id="manuScreen" class="container">
+			    <form  method="post" action="/new_event" id="form1" role="form">
+			    	<p>SSID: <input type='text' id="ssid" name="ssid" /></p>
+			    	<p>Event Title: <input type='text' id="event" name="title" /></p>
+			    	<p>Location: <input type='text' id="location" name="position_name" /></p>
+			    	<p>Regin: <input type='text' id="region" name="region" onfocus="this.value=''" value="[x1,y1,z1,x2,y3,z2]"/></p>
+			    	<p>Start Time:<input type='text' id="starthour" name="startHour" /><input type='text' id="startmins" name="startMinute" /></p>
+			    	<p>End Time<input type='text' id="endhour" name="endHour" /><input type='text' id="endmins" name="endMinute" /></p>
+			    	<p><input type="submit" value="Submit" class="btn btn-default"/></p>
+			    </form>
+			    
+			    <table id="table_events">	
+				</table>
+        	<div id="footer" >
+        	 <h4>&copy; CS4274 AY1314</h4>
+        	</div> 
+		</section>
+	
+	</body>
+
+</html>
