@@ -11,8 +11,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import sg.edu.nus.cs4274.autosilencer.MainActivity.OnDownloadReceiver;
-import sg.edu.nus.cs4274.autosilencer.MainActivity.RouterFoundReceiver;
-
 import android.app.IntentService;
 import android.content.Intent;
 import android.util.Log;

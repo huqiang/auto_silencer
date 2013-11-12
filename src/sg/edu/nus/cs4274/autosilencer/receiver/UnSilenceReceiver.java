@@ -11,10 +11,11 @@ import android.util.Log;
 
 /**
  * @author huqiang
- *
+ * 
  */
 public class UnSilenceReceiver extends BroadcastReceiver {
 	public static final String ACTION_RESP = "sg.edu.nus.cs4274.intent.action.UNSILENCEPHONE";
+
 	/**
 	 * 
 	 */
@@ -22,14 +23,17 @@ public class UnSilenceReceiver extends BroadcastReceiver {
 		super();
 	}
 
-	/* (non-Javadoc)
-	 * @see android.content.BroadcastReceiver#onReceive(android.content.Context, android.content.Intent)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.content.BroadcastReceiver#onReceive(android.content.Context,
+	 * android.content.Intent)
 	 */
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		Log.d("Receiver", "Received UNSilenceReceiver!!");
 		MainActivity.unSilencePhone();
-//		context.get
+		// context.get
 	}
 
 }

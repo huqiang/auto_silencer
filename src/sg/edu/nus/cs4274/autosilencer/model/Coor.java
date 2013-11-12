@@ -8,30 +8,29 @@ import org.json.JSONObject;
 
 /**
  * @author huqiang
- *
+ * 
  */
 public class Coor {
 	public int X;
 	public int Y;
 	public int Z;
+
 	/**
 	 * 
 	 */
 	public Coor() {
-		// TODO Auto-generated constructor stub
 	}
 
-	public void fromJSON(String json){
+	public void fromJSON(String json) {
 		try {
 			JSONObject obj = new JSONObject(json);
 			this.X = obj.getInt("X");
 			this.Y = obj.getInt("Y");
 			this.Z = obj.getInt("Z");
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 }
