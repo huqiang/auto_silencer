@@ -110,36 +110,29 @@ public class MainActivity extends Activity {
 	{
 		
 		float z_current;
-		float z_previous = 0;
-		
-		
 		public void onAccuracyChanged(Sensor sensor, int accuracy) {
 		}
 
 		@Override
 		public void onSensorChanged(SensorEvent se) {
-			
 			z_current = se.values[2];
-			
+			TextView displayText = (TextView) findViewById(R.id.textView2);
 			AudioManager audiomanage = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-			
-			if(z_current > 11 )
+
+			if(z_current > 15 )
 			{
 				//face up.
-				TextView displayText = (TextView) findViewById(R.id.textView4);
-				displayText.setText("Slient Off");
+				displayText.setText("Flip Detected: Face up");
 				audiomanage.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
 				delayPolling();
 				
 			}
-			if(z_current < -11)
+			if(z_current < -15)
 			{
 				//face down.
-				TextView displayText = (TextView) findViewById(R.id.textView4);
-				displayText.setText("Slient On");
+				displayText.setText("Flip Detected: Face down");
 				audiomanage.setRingerMode(AudioManager.RINGER_MODE_SILENT);
 				delayPolling();
-				
 			}
 			checkVolStatus();
 		}
@@ -179,18 +172,15 @@ public class MainActivity extends Activity {
 	public void onToggleClicked(View view) {
 		// Is the toggle on?
 		boolean on = ((ToggleButton) view).isChecked();
-		TextView displayText = (TextView) findViewById(R.id.textView2);
+		
 		AudioManager audiomanage = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 		if (on) {
-
-			displayText.setText("Slient Off");
 
 			audiomanage.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
 			delayPolling();
 
 		} else {
 
-			displayText.setText("Slient On");
 			audiomanage.setRingerMode(AudioManager.RINGER_MODE_SILENT);
 			delayPolling();
 		}
