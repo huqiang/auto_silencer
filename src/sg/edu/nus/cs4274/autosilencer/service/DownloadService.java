@@ -24,9 +24,10 @@ import android.util.Log;
 public class DownloadService extends IntentService {
 	public static final String PARAM_IN_MSG = "imsg";
 	public static final String PARAM_OUT_MSG = "omsg";
-	//private final static String SERVER = "http://qiang.hu:4274/";
-	//Change IP address here.
+	// private final static String SERVER = "http://qiang.hu:4274/";
+	// Change IP address here.
 	private final static String SERVER = "http://172.28.178.46:4274/";
+
 	/**
 	 * @param name
 	 */
@@ -46,21 +47,19 @@ public class DownloadService extends IntentService {
 	 */
 	@Override
 	protected void onHandleIntent(Intent intent) {
-		String ids[] = intent.getStringArrayExtra(PARAM_IN_MSG);
+		String id = intent.getStringExtra(PARAM_IN_MSG);
 		String result = "";
 		Intent broadcastIntent = new Intent();
 		broadcastIntent.setAction(OnDownloadReceiver.ACTION_RESP);
 		broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
-		for (String id : ids) {
-			try {
-				Log.d("Download", "Downloading: "+SERVER+id);
-				result += downloadFile(SERVER+id);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+		try {
+			Log.d("Download", "Downloading: " + SERVER + id);
+			result += downloadFile(SERVER + id);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 		broadcastIntent.putExtra(PARAM_OUT_MSG, result);
-		Log.d("Download", "result: "+ result);
+		Log.d("Download", "result: " + result);
 		sendBroadcast(broadcastIntent);
 
 	}
@@ -71,7 +70,7 @@ public class DownloadService extends IntentService {
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
 		int responseCode = conn.getResponseCode();
-		System.out.println("Code: " + responseCode);
+		Log.d("Download", "Code: " + responseCode);
 
 		if (responseCode == HttpURLConnection.HTTP_OK) {
 

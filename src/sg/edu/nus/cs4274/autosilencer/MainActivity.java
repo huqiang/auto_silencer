@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import sg.edu.nus.cs4274.autosilencer.model.Coor;
 import sg.edu.nus.cs4274.autosilencer.model.Schedule;
 import sg.edu.nus.cs4274.autosilencer.receiver.SilenceReceiver;
@@ -43,11 +46,11 @@ public class MainActivity extends Activity {
 	private LocUpdateReceiver locUpdateReceiver;
 	private AlarmManager alarm;
 	private Calendar cal;
-	//private final static String SERVER = "http://172.28.178.46:4274/";
-	private final static int POLLING_INTERVAL_SHORT = 600;
-	private final static int POLLING_INTERVAL_LONG = 1800;
+	private final static int POLLING_INTERVAL_SHORT = 6;
+	private final static int POLLING_INTERVAL_LONG = 18;
 	private String[] ROUTERS;
 	private Schedule[] SCHEDULES;
+	public int[] region = new int[3];
 	private static MainActivity mainActivity;
 
 	@Override
@@ -114,65 +117,20 @@ public class MainActivity extends Activity {
 		 @Override
 		    public void onReceive(Context context, Intent intent) {
 		    	String result = intent.getStringExtra("location");
-		    	
-		    	
-		    	//Intent startCoalition=new Intent(this.getApplicationContext(),LocationFinderService.class);
-		    	//coalition=new Intent
-				
-				
-//		    	intent.getse
-				String coorStr = intent.getStringExtra("coor");
-				int x = intent.getIntExtra("userPositionX",-1);
-				int y = intent.getIntExtra("userPositionY",-1);
-				Toast.makeText(getApplicationContext(),x + " " + y,Toast.LENGTH_LONG).show();
-				
-				if ( x < 520){
-					silencePhone();
-				}else{
-					unSilencePhone();
+		    	try {
+					JSONObject resultObj = new JSONObject(result);
+					JSONObject coorObj = resultObj.getJSONObject("coor");
+					int x = coorObj.getInt("X");
+					int y = coorObj.getInt("Y");
+					int z = coorObj.getInt("Z");
+					Toast.makeText(getApplicationContext(),x + " " + y+"  "+z,Toast.LENGTH_LONG).show();
+					region[0] = x;
+					region[1] = y;
+					region[2] = z;
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-//				Coor coor = new Coor();
-//				coor.fromJSON(coorStr);
-//				Toast.makeText(getApplicationContext(),""+coor.X+" "+coor.Y+"##"+result,Toast.LENGTH_LONG).show();
-		    	//Log.e("richard",result);
-//		    	Floor floor = new Floor();
-//		    	
-//		    	// WRITE CODES HERE
-//		    	// Hint 1: You need to populate the attributes of the floor object with data received from broadcast
-//		    	// Hint 2: You need to populate the indoorPosition with data received from broadcast
-//				int fId = intent.getIntExtra("floorID",1);
-//				switch(fId)
-//				{
-//				case -1:
-//					floor.id = "COM1_B1.jpg";
-//					
-//					break;
-//				case 1:
-//					floor.id = "COM1_L1.jpg";
-//					
-//			    
-//					break;
-//				case 2:
-//					floor.id = "COM1_L2.jpg";
-//					break;
-//				
-//				}
-//				//ricard's modification
-//				//coalition.putExtra("result",floor.id);
-//				//startService(coalition);
-//				
-//				floor.location = new GeoPoint(1294949,103773838); 
-//						//new GeoPoint(intent.getIntExtra("floorLocationX",-1),intent.getIntExtra("floorLocationY",-1));
-//		    	floor.name = "";//floor.id.split(".")[0];
-//		    	
-//		    	indoorPosition = new Point();
-//				indoorPosition.x = intent.getIntExtra("userPositionX",-1);
-//				indoorPosition.y = intent.getIntExtra("userPositionY",-1);
-//				
-//				Mark mark = new Mark(floor);
-//				markOverlay.removeAll();
-//				markOverlay.addMark(mark);
-//				mark.showInfo();
 		    }
 		
 	}
@@ -208,9 +166,11 @@ public class MainActivity extends Activity {
 		}
 
 		private void getSchedules() {
-			Intent intent = new Intent(this.context, DownloadService.class);
-			intent.putExtra(DownloadService.PARAM_IN_MSG, ROUTERS);
-			startService(intent);
+			for(String id: ROUTERS){
+				Intent intent = new Intent(this.context, DownloadService.class);
+				intent.putExtra(DownloadService.PARAM_IN_MSG, id);
+				startService(intent);
+			}
 		}
 
 		private boolean isNetworkAvailable() {
@@ -238,9 +198,11 @@ public class MainActivity extends Activity {
 			String routerString = intent
 					.getStringExtra(DownloadService.PARAM_OUT_MSG);
 			Log.d("JSON", routerString);
-			SCHEDULES = Schedule.fromJSONString(routerString);
+			if (routerString != ""){
+				SCHEDULES = Schedule.fromJSONString(routerString);
+			}
 			
-			if(SCHEDULES.length > 0){
+			if(SCHEDULES != null && SCHEDULES.length > 0){
 				scheduleEvents();
 				updateListView();
 				changePollingInterval(POLLING_INTERVAL_LONG);
@@ -305,6 +267,7 @@ public class MainActivity extends Activity {
 				//Now is before start time, the silence phone at start time and unsilence phone after end
 				Log.d("Time", "Setting silence event");
 				Intent silenceIntent = new Intent(this, sg.edu.nus.cs4274.autosilencer.receiver.SilenceReceiver.class);
+				silenceIntent.putExtra("region", s.region);
 				silenceIntent.setClass(this, SilenceReceiver.class);
 //				silenceIntent.addCategory(Intent.CATEGORY_DEFAULT);
 				PendingIntent pendingSilenceIntent = PendingIntent.getBroadcast(getApplicationContext(), index++, silenceIntent, PendingIntent.FLAG_ONE_SHOT);
@@ -402,5 +365,7 @@ public class MainActivity extends Activity {
 		}
 
 	}
-
+	public static MainActivity getInstance(){
+		return mainActivity;
+	}
 }

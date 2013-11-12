@@ -20,6 +20,8 @@ import android.widget.TextView;
  */
 public class Schedule {
 	public String title;
+	public String position;
+	public int[] region;
 	public int startHour;
 	public int startMinute;
 	public int endHour;
@@ -27,8 +29,10 @@ public class Schedule {
 	/**
 	 * 
 	 */
-	public Schedule(String title, int startH, int startM, int endH, int endM) {
+	public Schedule(String title, String position_name, int[] region, int startH, int startM, int endH, int endM) {
 		this.title = title;
+		this.position = position_name;
+		this.region = region;
 		this.startHour = startH;
 		this.startMinute = startM;
 		this.endHour = endH;
@@ -41,7 +45,14 @@ public class Schedule {
 			result = new Schedule[jsonArray.length()];
 			for (int i = 0; i < jsonArray.length(); i++) {
 		        JSONObject jsonObject = jsonArray.getJSONObject(i);
+		        JSONArray regionArr = jsonObject.getJSONArray("region");
+		        int[] region = new int[6];
+		        for (int j = 0; j < 6; j++){
+		        	region[i] = regionArr.getInt(j);
+		        }
 		        result[i] = new Schedule(jsonObject.getString("title"),
+		        		jsonObject.getString("position_name"),
+		        		region,
 		        		jsonObject.getInt("startHour"),
 		        		jsonObject.getInt("startMinute"),
 		        		jsonObject.getInt("endHour"),
