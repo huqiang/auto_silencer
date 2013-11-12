@@ -21,6 +21,10 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -91,7 +95,73 @@ public class MainActivity extends Activity {
 		mIntent.addCategory("android.intent.category.LAUNCHER");
 		startService(mIntent);
 
+		//Shake Code
+		mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
+
+				
 	}
+	
+	private SensorManager mSensorManager;
+
+	
+	
+	private final SensorEventListener mSensorListener = new SensorEventListener()
+	{
+		
+		float z_current;
+		float z_previous = 0;
+		
+		
+		public void onAccuracyChanged(Sensor sensor, int accuracy) {
+		}
+
+		@Override
+		public void onSensorChanged(SensorEvent se) {
+			
+			z_current = se.values[2];
+			
+			AudioManager audiomanage = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+			
+			if(z_current > 11 )
+			{
+				//face up.
+				TextView displayText = (TextView) findViewById(R.id.textView4);
+				displayText.setText("Slient Off");
+				audiomanage.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+				delayPolling();
+				
+			}
+			if(z_current < -11)
+			{
+				//face down.
+				TextView displayText = (TextView) findViewById(R.id.textView4);
+				displayText.setText("Slient On");
+				audiomanage.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+				delayPolling();
+				
+			}
+			checkVolStatus();
+		}
+	};
+	
+
+		
+	@Override
+    protected void onResume() {
+      super.onResume();	
+      mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    @Override
+    protected void onStop() {
+      mSensorManager.unregisterListener(mSensorListener);
+     
+      super.onStop();
+    }	
+
+		
+		
 
 	@Override
 	public void onDestroy() {
