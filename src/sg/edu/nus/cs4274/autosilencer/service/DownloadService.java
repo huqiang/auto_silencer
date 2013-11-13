@@ -24,7 +24,7 @@ public class DownloadService extends IntentService {
 	public static final String PARAM_OUT_MSG = "omsg";
 	// private final static String SERVER = "http://qiang.hu:4274/";
 	// Change IP address here.
-	private final static String SERVER = "http://192.168.1.89:4274/";
+	private final static String SERVER = "http://172.28.180.124:4274/";
 
 	/**
 	 * @param name

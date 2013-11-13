@@ -96,51 +96,51 @@ public class MainActivity extends Activity {
 		startService(mIntent);
 
 		//Shake Code
-		mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
+		//mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        //mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
 
 				
 	}
 	
-	private SensorManager mSensorManager;
+//	private SensorManager mSensorManager;
+//
+//	
+//	
+//	private final SensorEventListener mSensorListener = new SensorEventListener()
+//	{
+//		
+//		float z_current;
+//		public void onAccuracyChanged(Sensor sensor, int accuracy) {
+//		}
+//
+//		@Override
+//		public void onSensorChanged(SensorEvent se) {
+//			z_current = se.values[2];
+//			TextView displayText = (TextView) findViewById(R.id.textView2);
+//			AudioManager audiomanage = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+//
+//			if(z_current > 15 )
+//			{
+//				//face up.
+//				displayText.setText("Flip Detected: Face up");
+//				audiomanage.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+//				delayPolling();
+//				
+//			}
+//			if(z_current < -15)
+//			{
+//				//face down.
+//				displayText.setText("Flip Detected: Face down");
+//				audiomanage.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+//				delayPolling();
+//			}
+//			checkVolStatus();
+//		}
+//	};
+	
 
-	
-	
-	private final SensorEventListener mSensorListener = new SensorEventListener()
-	{
 		
-		float z_current;
-		public void onAccuracyChanged(Sensor sensor, int accuracy) {
-		}
-
-		@Override
-		public void onSensorChanged(SensorEvent se) {
-			z_current = se.values[2];
-			TextView displayText = (TextView) findViewById(R.id.textView2);
-			AudioManager audiomanage = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-
-			if(z_current > 15 )
-			{
-				//face up.
-				displayText.setText("Flip Detected: Face up");
-				audiomanage.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-				delayPolling();
-				
-			}
-			if(z_current < -15)
-			{
-				//face down.
-				displayText.setText("Flip Detected: Face down");
-				audiomanage.setRingerMode(AudioManager.RINGER_MODE_SILENT);
-				delayPolling();
-			}
-			checkVolStatus();
-		}
-	};
-	
-
-		
-	@Override
+/*	@Override
     protected void onResume() {
       super.onResume();	
       mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
@@ -152,7 +152,7 @@ public class MainActivity extends Activity {
      
       super.onStop();
     }	
-
+*/
 		
 		
 
@@ -226,6 +226,7 @@ public class MainActivity extends Activity {
 		Calendar start = Calendar.getInstance();
 		Calendar end = Calendar.getInstance();
 		int index = 0;
+		cal = Calendar.getInstance();
 		if (SCHEDULES == null)
 			return;
 		for (Schedule s : SCHEDULES) {
@@ -244,11 +245,10 @@ public class MainActivity extends Activity {
 				// Now is before start time, the silence phone at start time and
 				// unsilence phone after end
 				Log.d("Time", "Setting silence event");
-				Intent silenceIntent = new Intent(
-						this,
+				Intent silenceIntent = new Intent(     //<-------intent issue
+						getApplicationContext(),
 						sg.edu.nus.cs4274.autosilencer.receiver.SilenceReceiver.class);
 				silenceIntent.putExtra("region", s.region);
-				silenceIntent.setClass(this, SilenceReceiver.class);
 				// silenceIntent.addCategory(Intent.CATEGORY_DEFAULT);
 				PendingIntent pendingSilenceIntent = PendingIntent
 						.getBroadcast(getApplicationContext(), index++,
@@ -257,7 +257,7 @@ public class MainActivity extends Activity {
 				alarm.set(AlarmManager.RTC_WAKEUP, start.getTimeInMillis(),
 						pendingSilenceIntent);
 				Log.d("Time", "Setting unSilence event");
-				Intent unsilenceIntent = new Intent(this,
+				Intent unsilenceIntent = new Intent(getApplicationContext(),
 						UnSilenceReceiver.class);
 				unsilenceIntent.setAction(UnSilenceReceiver.ACTION_RESP);
 				PendingIntent pendingUnSilenceIntent = PendingIntent
@@ -452,7 +452,7 @@ public class MainActivity extends Activity {
 			}
 
 			if (SCHEDULES != null && SCHEDULES.length > 0) {
-				scheduleEvents();
+				scheduleEvents(); // error here....
 				updateListView();
 				changePollingInterval(POLLING_INTERVAL_LONG);
 			}
