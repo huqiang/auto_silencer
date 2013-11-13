@@ -10,9 +10,16 @@
 			var PATH_TO_IMAGE_FOLDER = "./image/";
 			var DEBUG;
 			$(document).ready(function(){
-				$("#imgInp").change(function(){
-					readURL(this);
-				});	
+
+				$.ajax({
+					url: "/all",
+					success: function(data){
+						displayEvents(JSON.parse(data));
+					}
+				})
+				// $("#imgInp").change(function(){
+				// 	readURL(this);
+				// });	
 
 				$('#form1').ajaxForm({
 					success: function (result) {
