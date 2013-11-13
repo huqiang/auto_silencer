@@ -67,16 +67,18 @@
 					var table_events = $("#table_events");
 					table_events.append($('<tr><th>SSID</th><th>Event</th><th>Location</th><th>Start Time</th><th>End Time</th></tr>'));
 					for(i = 0; i < events.length; i++){
+						if (events[i] != null){
 						var e = events[i];
 						for(var j = 0; j < e.length; j++){
 							var tr = $('<tr'+" col="+i+'/>');
-							tr.append($('<td>'+e[i]["ssid"]+'</td>'));
-							tr.append($('<td>'+e[i]["title"]+'</td>'));
-							tr.append($('<td>'+e[i]["position_name"]+'</td>'));
-							tr.append($('<td>'+e[i]["startHour"]+':'+e[i]["startMinute"]+'</td>'));
-							tr.append($('<td>'+e[i]["endHour"]+':'+e[i]["endMinute"]+'</td>'));
+							tr.append($('<td>'+e[j]["ssid"]+'</td>'));
+							tr.append($('<td>'+e[j]["title"]+'</td>'));
+							tr.append($('<td>'+e[j]["position_name"]+'</td>'));
+							tr.append($('<td>'+e[j]["startHour"]+':'+e[j]["startMinute"]+'</td>'));
+							tr.append($('<td>'+e[j]["endHour"]+':'+e[j]["endMinute"]+'</td>'));
 							$("#table_events").append(tr);	
 						}
+					}
 						
 					}
 				}

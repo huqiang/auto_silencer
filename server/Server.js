@@ -7,7 +7,7 @@ var app        = express();
 //var httpServer = http.createServer(app);
 //httpServer.listen(port, "0.0.0.0");
 var routers=[];
-var routers_index={};
+var routers_index={index:3};
 routers_index["CS4274_01"] = 0;
 routers_index["CS4274_02"] = 1;
 routers_index["NUS"] = 2;
@@ -52,8 +52,14 @@ app.post("/new_event", function(req,res){
 	var params = req.body;
 	console.log(params);
 	var index = routers_index[params.ssid];
+		console.log("index is "+ index+  "  "+routers_index.index);
 	if (index == null){
-		index = routers_index.push(params.ssid)-1;
+		index = routers_index.index;
+
+		console.log("in if index is "+ index);
+		routers_index.index++;
+		routers_index[params.ssid] = index;
+		console.log(routers_index);
 		routers[index] = [];
 	}
 	else{
