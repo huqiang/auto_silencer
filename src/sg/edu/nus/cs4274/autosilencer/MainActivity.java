@@ -96,51 +96,51 @@ public class MainActivity extends Activity {
 		startService(mIntent);
 
 		//Shake Code
-		//mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        //mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
+		mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
 
 				
 	}
 	
-//	private SensorManager mSensorManager;
-//
-//	
-//	
-//	private final SensorEventListener mSensorListener = new SensorEventListener()
-//	{
-//		
-//		float z_current;
-//		public void onAccuracyChanged(Sensor sensor, int accuracy) {
-//		}
-//
-//		@Override
-//		public void onSensorChanged(SensorEvent se) {
-//			z_current = se.values[2];
-//			TextView displayText = (TextView) findViewById(R.id.textView2);
-//			AudioManager audiomanage = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-//
-//			if(z_current > 15 )
-//			{
-//				//face up.
-//				displayText.setText("Flip Detected: Face up");
-//				audiomanage.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-//				delayPolling();
-//				
-//			}
-//			if(z_current < -15)
-//			{
-//				//face down.
-//				displayText.setText("Flip Detected: Face down");
-//				audiomanage.setRingerMode(AudioManager.RINGER_MODE_SILENT);
-//				delayPolling();
-//			}
-//			checkVolStatus();
-//		}
-//	};
+	private SensorManager mSensorManager;
+
+	
+	
+	private final SensorEventListener mSensorListener = new SensorEventListener()
+	{
+		
+		float z_current;
+		public void onAccuracyChanged(Sensor sensor, int accuracy) {
+		}
+
+		@Override
+		public void onSensorChanged(SensorEvent se) {
+			z_current = se.values[2];
+			TextView displayText = (TextView) findViewById(R.id.textView2);
+			AudioManager audiomanage = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+
+			if(z_current > 11 )
+			{
+				//face up.
+				displayText.setText("Flip Detected: Face up");
+				audiomanage.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+				delayPolling();
+				
+			}
+			if(z_current < -11)
+			{
+				//face down.
+				displayText.setText("Flip Detected: Face down");
+				audiomanage.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+				delayPolling();
+			}
+			checkVolStatus();
+		}
+	};
 	
 
 		
-/*	@Override
+	@Override
     protected void onResume() {
       super.onResume();	
       mSensorManager.registerListener(mSensorListener, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
@@ -152,7 +152,7 @@ public class MainActivity extends Activity {
      
       super.onStop();
     }	
-*/
+
 		
 		
 

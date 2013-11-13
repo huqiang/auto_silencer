@@ -13,10 +13,11 @@ routers_index["CS4274_02"] = 1;
 routers_index["NUS"] = 2;
 //routers[0] = {"name":"CS4274_01", "slientTime": [{"start":1300, "end":1500}]};
 //routers[1] = {"name":"CS4274_02", "slientTime": [{"start":1300, "end":1500},{"start":1600, "end":1630}]};
-routers[routers_index["CS4274_01"]] = [{"ssid":"CS4274_01","title":"CS4274_01_Event_One","startHour":13, "startMinute":0, "endHour":15, "endMinute":0}];
-routers[routers_index["CS4274_02"]] = [{"ssid":"CS4274_02","title":"CS4274_02_Event_One","startHour":13, "startMinute":0, "endHour":15, "endMinute":0},{"ssid":"CS4274_02","title":"CS4274_02_Event_Two","startHour":16, "startMinute":0, "endHour":16, "endMinute":30}];
-routers[routers_index["NUS"]] = [{"ssid":"NUS","title":"NUS_TEST","position_name":"SR1", "region":[380,120,2,470,230,2], "startHour":18, "startMinute":10, "endHour":18, "endMinute":11}, 
+routers[routers_index["CS4274_01"]] = [{"ssid":"NUS","title":"NUS_TEST","position_name":"SR1", "region":[380,120,2,470,230,2], "startHour":13, "startMinute":45, "endHour":13, "endMinute":50}, 
 								{"ssid":"NUS","title":"NUS_TEST2","position_name":"SR1", "region":[380,120,2,470,230,2],"startHour":16, "startMinute":30, "endHour":16, "endMinute":50}];
+routers[routers_index["CS4274_02"]] = [{"ssid":"CS4274_02","title":"CS4274_02_Event_One","startHour":13, "startMinute":0, "endHour":15, "endMinute":0},{"ssid":"CS4274_02","title":"CS4274_02_Event_Two","startHour":16, "startMinute":0, "endHour":16, "endMinute":30}];
+//routers[routers_index["NUS"]] = [{"ssid":"NUS","title":"NUS_TEST","position_name":"SR1", "region":[380,120,2,470,230,2], "startHour":13, "startMinute":45, "endHour":13, "endMinute":50}, 
+								//{"ssid":"NUS","title":"NUS_TEST2","position_name":"SR1", "region":[380,120,2,470,230,2],"startHour":16, "startMinute":30, "endHour":16, "endMinute":50}];
 //routers["NUS"] = [{"title":"NUS_TEST","startHour":16, "startMinute":10, "endHour":17, "endMinute":11}];
 //,{"title":"CS4274_02_Event_Two","startHour":16, "startMinute":0, "endHour":16, "endMinute":30}];
 var response;
